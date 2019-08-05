@@ -1,30 +1,81 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import MyForm from './MyForm';
 import MyList from './MyList';
 import {Switch,Route} from 'react-router-dom';
 import Navbar from './Navbar';
+import LoginForm from './LoginForm';
 
 class App extends React.Component{
   
   constructor(props) {
 	  super(props);
 	  this.state= {
-		  list:[]		  
+			list:[],
+			isLogged:false,
+			token:""
 	  }
   }
   
   componentDidMount() {
 	  console.log("Component Did Mount - App.js");
-	  this.getShoppingList();
+	  //this.getShoppingList();
   }
+  
+  //LOGIN API
+  
+  register = (user) => {
+	  let request = {
+		  method:"POST",
+		  mode:"cors",
+		  headers:{"Content-Type":"application/json"},
+		  body:JSON.stringify(user)
+	  }
+	  fetch("/register", request).then(response => {
+		  if(response.ok) {
+			  alert("Register success!");
+		  } else {
+			  console.log("Server responded with status:"+response.status);
+		  }
+	  }).catch(error => {
+		  console.log(error);
+	  })
+  }
+  
+  login = (user) => {
+	  let request = {
+		  method:"POST",
+		  mode:"cors",
+		  headers:{"Content-Type":"application/json"},
+		  body:JSON.stringify(user)
+	  }
+	  fetch("/login", request).then(response => {
+		  if(response.ok) {
+			  response.json().then(data => {
+				  this.setState({
+					  isLogged:true,
+					  token:data.token
+				  }, () => {
+					  this.getShoppingList();
+				  })
+			  }).catch(error => {
+				  console.log("Error parsing JSON");
+			  })
+		  } else {
+			  console.log("Server responded with status:"+response.status);
+		  }
+	  }).catch(error => {
+		  console.log(error);
+	  })
+  }  
+  //SHOPPING API
   
   getShoppingList = () => {
 	  let request = {
 		  method:"GET",
 		  mode:"cors",
-		  headers:{"Content-Type":"application/json"}
+		  headers:{"Content-Type":"application/json",
+					"token":this.state.token}
 	  }
 	  fetch("/api/shopping",request).then(response => {
 			if(response.ok) {
@@ -46,7 +97,8 @@ class App extends React.Component{
 	  let request = {
 		  method:"POST",
 		  mode:"cors",
-		  headers:{"Content-Type":"application/json"},
+		  headers:{"Content-Type":"application/json",
+					"token":this.state.token},
 		  body:JSON.stringify(item)
 	  }
 	  fetch("/api/shopping",request).then(response => {
@@ -67,7 +119,8 @@ class App extends React.Component{
 	  let request = {
 		  method:"DELETE",
 		  mode:"cors",
-		  headers:{"Content-Type":"application/json"}
+		  headers:{"Content-Type":"application/json",
+					"token":this.state.token}
 	  }
 	  fetch("/api/shopping/"+id,request).then(response => {
 			if(response.ok) {
@@ -86,7 +139,8 @@ class App extends React.Component{
 	  let request = {
 		  method:"PUT",
 		  mode:"cors",
-		  headers:{"Content-Type":"application/json"},
+		  headers:{"Content-Type":"application/json",
+					"token":this.state.token},
 		  body:JSON.stringify(item)
 	  }
 	  fetch("/api/shopping/"+item.id,request).then(response => {
@@ -105,10 +159,14 @@ class App extends React.Component{
   render() {
 	  return (
 		<div className="App">
-			<Navbar />
+			<Navbar isLogged={this.state.isLogged}/>
 			<hr/>
 			<Switch>
 				<Route exact path="/" render={() => 
+					<LoginForm register={this.register}
+							   login={this.login}/>	
+				}/>
+				<Route path="/list" render={() => 
 					<MyList list={this.state.list}
 							removeFromList={this.removeFromList}
 							editItem={this.editItem}/>	

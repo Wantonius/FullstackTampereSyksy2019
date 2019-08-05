@@ -5,13 +5,17 @@ import {List,Header} from 'semantic-ui-react';
 export default class Navbar extends React.Component {
 
 	render() {
-		return(
-			<div>
-				<Header>Shoppinglist App</Header>
-				<List>
-					<List.Item><Link to="/">Shopping List</Link></List.Item>
+		let navbar = <List></List>
+		if(this.props.isLogged) {
+			navbar = <List>
+					<List.Item><Link to="/list">Shopping List</Link></List.Item>
 					<List.Item><Link to="/form">Add To List</Link></List.Item>
 				</List>
+		}
+		return(
+			<div style={{height:100, backgroundColor:"lightblue"}}>
+				<Header>Shoppinglist App</Header>
+				{navbar}
 			</div>
 		)
 	}
