@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import MyForm from './MyForm';
 import MyList from './MyList';
-import {Switch,Route} from 'react-router-dom';
+import {Switch,Route,Redirect,withRouter} from 'react-router-dom';
 import Navbar from './Navbar';
 import LoginForm from './LoginForm';
 
@@ -19,7 +19,15 @@ class App extends React.Component{
   
   componentDidMount() {
 	  console.log("Component Did Mount - App.js");
-	  //this.getShoppingList();
+	  if(sessionStorage.getItem("state")) {
+		  console.log("state found!");
+		  let tempState = JSON.parse(sessionStorage.getItem("state"));
+		  this.setState(tempState, () => {this.getShoppingList()});
+	  }
+  }
+  
+  saveToStorage = () => {
+	  sessionStorage.setItem("state", JSON.stringify(this.state));
   }
   
   //LOGIN API
@@ -57,6 +65,7 @@ class App extends React.Component{
 					  token:data.token
 				  }, () => {
 					  this.getShoppingList();
+					  this.saveToStorage();
 				  })
 			  }).catch(error => {
 				  console.log("Error parsing JSON");
@@ -82,6 +91,8 @@ class App extends React.Component{
 				response.json().then(data => {
 					this.setState({
 						list:data
+					}, () => {
+						this.saveToStorage();
 					})
 				}).catch(error => {
 					console.log("Error in parsing response json");	
@@ -105,6 +116,7 @@ class App extends React.Component{
 			if(response.ok) {
 				console.log("addToList success");
 				this.getShoppingList();
+				this.props.history.push("/list");
 			} else {
 				console.log("Server responded with status:"
 				+response.statusText);
@@ -163,16 +175,25 @@ class App extends React.Component{
 			<hr/>
 			<Switch>
 				<Route exact path="/" render={() => 
-					<LoginForm register={this.register}
-							   login={this.login}/>	
+					this.state.isLogged ?
+					(<Redirect to="/list"/>) :
+					(<LoginForm register={this.register}
+							   login={this.login}/>)	
 				}/>
 				<Route path="/list" render={() => 
-					<MyList list={this.state.list}
+					this.state.isLogged ?				
+					(<MyList list={this.state.list}
 							removeFromList={this.removeFromList}
-							editItem={this.editItem}/>	
+							editItem={this.editItem}/>) :
+					(<Redirect to="/"/>)
 				}/>
 				<Route path="/form" render={() => 
-					<MyForm addToList={this.addToList}/>
+					this.state.isLogged ?
+					(<MyForm addToList={this.addToList}/>) :
+					(<Redirect to="/"/>)
+				}/>
+				<Route render={() => 
+					(<Redirect to="/"/>)
 				}/>
 			</Switch>
 		</div>
@@ -180,4 +201,4 @@ class App extends React.Component{
   }
 }
 
-export default App;
+export default withRouter(App);
