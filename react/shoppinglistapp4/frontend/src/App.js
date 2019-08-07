@@ -18,9 +18,7 @@ class App extends React.Component{
   }
   
   componentDidMount() {
-	  console.log("Component Did Mount - App.js");
 	  if(sessionStorage.getItem("state")) {
-		  console.log("state found!");
 		  let tempState = JSON.parse(sessionStorage.getItem("state"));
 		  this.setState(tempState, () => {
 			  if(this.state.isLogged) {
@@ -191,7 +189,7 @@ class App extends React.Component{
 					"token":this.state.token},
 		  body:JSON.stringify(item)
 	  }
-	  fetch("/api/shopping/"+item.id,request).then(response => {
+	  fetch("/api/shopping/"+item._id,request).then(response => {
 			if(response.ok) {
 				console.log("editItem success");
 				this.getShoppingList();

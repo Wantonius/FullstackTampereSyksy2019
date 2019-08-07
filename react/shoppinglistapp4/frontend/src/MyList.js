@@ -14,10 +14,9 @@ export default class MyList extends React.Component {
 		}
 	}
 	
-	remove = (id) => {
-		let tempId = parseInt(id,10);
+	remove = (id) => {		
 		for(let i=0;i<this.props.list.length;i++) {
-			if(this.props.list[i].id === tempId) {
+			if(this.props.list[i]._id === id) {
 				this.setState({
 					removeIndex:i,
 					editIndex:-1
@@ -28,9 +27,8 @@ export default class MyList extends React.Component {
 	}
 	
 	edit = (id) => {
-		let tempId = parseInt(id,10);
 		for(let i=0;i<this.props.list.length;i++) {
-			if(this.props.list[i].id === tempId) {
+			if(this.props.list[i]._id === id) {
 				this.setState({
 					removeIndex:-1,
 					editIndex:i
@@ -60,17 +58,17 @@ export default class MyList extends React.Component {
 		let listitems = this.props.list.map((item,index) => {
 			if(this.state.removeIndex === index) {
 				return <DeleteRow item={item}
-						key={item.id}
+						key={item._id}
 						handleRemove={this.handleRemove}
 						cancel={this.cancel}/>
 			}
 			if(this.state.editIndex === index) {
-				return <EditRow key={item.id}
+				return <EditRow key={item._id}
 							item={item}
 							editItem={this.editItem}
 							cancel={this.cancel}/>
 			}
-			return <NormalRow key={item.id}
+			return <NormalRow key={item._id}
 					   removeFromList={this.remove}
 					   edit={this.edit}
 					   item={item}/>		

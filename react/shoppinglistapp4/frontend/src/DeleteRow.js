@@ -23,7 +23,7 @@ export default class DeleteRow extends React.Component {
 							</Table.Cell>
 				<Table.Cell>
 					<Button color="green"
-							name={this.props.item.id}
+							name={this.props.item._id}
 							onClick={this.remove}>Confirm</Button>
 							</Table.Cell>
 			</Table.Row>		
