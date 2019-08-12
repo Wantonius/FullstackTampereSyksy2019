@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
-import MyForm from './MyForm';
-import MyList from './MyList';
+import MyForm from './components/MyForm';
+import MyList from './components/MyList';
 import {Switch,Route,Redirect,withRouter} from 'react-router-dom';
-import Navbar from './Navbar';
-import LoginForm from './LoginForm';
+import Navbar from './components/Navbar';
+import LoginForm from './components/LoginForm';
 import {connect} from 'react-redux';
 
 class App extends React.Component{

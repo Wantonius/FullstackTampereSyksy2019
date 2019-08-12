@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {List,Header} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-import {onLogout} from './actions/loginActions';
+import {onLogout} from '../actions/loginActions';
 
 class Navbar extends React.Component {
 
