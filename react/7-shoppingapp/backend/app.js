@@ -17,10 +17,12 @@ let ttl_diff = 1000*60*60;
 
 let port = process.env.PORT || 3001;
 
-mongoose.connect("mongodb://localhost/tfsshoppinglist").then(
+mongoose.connect("mongodb+srv://test:test@testcluster-ujjvo.mongodb.net/test").then(
 	() => {console.log("Success in connecting Mongodb")},
 	error => {console.log("Error in connecting Mongodb:"+error)}
 );
+
+//app.use(express.static(__dirname+"/public"));
 
 //SESSION MANAGEMENT
 
