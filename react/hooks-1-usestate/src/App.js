@@ -20,11 +20,23 @@ function App() {
 		});
 	}
 	
+	const removeFromList = (index) => {
+		let tempList = [];
+		for(let i = 0;i<state.list.length;i++) {
+			if(i !== index) {
+				tempList.push(state.list[i]);
+			}
+		}		
+		setState({
+			...state,
+			list:tempList
+		})
+	}	
 	return (
 	<div className="App">
 		<ShoppingForm addToList={addToList}/>
 		<hr/>
-		<ShoppingList list={state.list}/>
+		<ShoppingList list={state.list} removeFromList={removeFromList}/>
 	</div>
 	);
 }

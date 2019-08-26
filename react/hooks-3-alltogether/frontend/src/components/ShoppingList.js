@@ -8,7 +8,7 @@ const ShoppingList = ({list,removeFromList}) => {
 					<Table.Cell>{item.type}</Table.Cell>
 					<Table.Cell>{item.count}</Table.Cell>
 					<Table.Cell>{item.price}</Table.Cell>
-					<Table.Cell><Button onClick={()=>removeFromList(index)}>Remove</Button></Table.Cell>
+					<Table.Cell><Button onClick={()=>removeFromList(item.id)}>Remove</Button></Table.Cell>
 				</Table.Row>		
 	})
 	
