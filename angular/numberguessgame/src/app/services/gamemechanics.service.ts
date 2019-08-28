@@ -9,7 +9,7 @@
 	private topList = [];
 	
 	constructor() {
-		this.currentTarget = 0;
+		this.currentTarget = Math.floor(Math.random()*100)+1;
 		this.numberOfGuesses = 0;
 		this.playerName = "";
 	}
