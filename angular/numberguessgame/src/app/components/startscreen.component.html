@@ -1,0 +1,16 @@
+<h2>Number Guess Game</h2>
+<p>Guess a number between 1-100. Player with the least amount of guesses is the best. Good Luck!</p>
+<form (ngSubmit)="startGame()" #gameForm="ngForm">
+	<label for="name">Your name, Player</label>
+	<input type="text"
+		   [(ngModel)]="name"
+		   name="name"
+		   id="name"/>
+	<button type="submit">Start</button>
+</form>
+<h4>Top player list</h4>
+<ul style="list-style-type:arabic-indic">
+	<li *ngFor="let player of topList">
+		Name:{{player.name}} Score:{{player.score}}
+	</li>
+</ul>	
