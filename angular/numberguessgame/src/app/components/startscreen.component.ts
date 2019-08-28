@@ -28,4 +28,9 @@ export class StartScreen {
 		this.name = "";
 		this._router.navigate(["/game"]);
 	}
+	
+	resetList() {
+		localStorage.clear();
+		this.topList=[];
+	}
 }
