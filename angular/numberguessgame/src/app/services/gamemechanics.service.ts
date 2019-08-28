@@ -41,11 +41,26 @@
 			name:this.playerName,
 			score: this.numberOfGuesses
 		})
+		this.topList = this.sortTopList(this.topList);
 		localStorage.setItem("toplist",JSON.stringify(this.topList));
 		return {
 			type:"win",
 			guesses:this.numberOfGuesses
 		}
+	}
+	
+	sortTopList(inputArray) {
+		let len = inputArray.length-1;
+		for(let i=0;i< len;i++) {
+			for(let j=0;j<len;j++) {
+				if(inputArray[j].score > inputArray[j+1].score) {
+					let tmp = inputArray[j];
+					inputArray[j] = inputArray[j+1];
+					inputArray[j+1] = tmp;
+				}
+			}
+		}
+		return inputArray;
 	}
 	 
  }
