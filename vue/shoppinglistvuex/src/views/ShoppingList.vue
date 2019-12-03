@@ -10,7 +10,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="item in list" :key="item.id">
+			<tr v-for="item in $store.state.list" :key="item.id">
 				<template v-if="editId !== item.id">
 					<td>{{item.type}}</td>
 					<td>{{item.count}}</td>
@@ -40,18 +40,17 @@ export default {
 			count:0
 		}
 	},
-	props:['list'],
 	methods: {
 		remove:function(id) {
-			this.$emit("remove-item",id);
+			this.$store.dispatch("removeFromList",id);
 		},
 		edit:function(id) {
 			this.editId = id;
-			for(let i=0;i<this.list.length;i++) {
-				if(this.list[i].id == id) {
-					this.type = this.list[i].type;
-					this.price = this.list[i].price;
-					this.count = this.list[i].count;
+			for(let i=0;i<this.$store.state.list.length;i++) {
+				if(this.$store.state.list[i].id == id) {
+					this.type = this.$store.state.list[i].type;
+					this.price = this.$store.state.list[i].price;
+					this.count = this.$store.state.list[i].count;
 				}
 			}
 		},
@@ -62,7 +61,7 @@ export default {
 				price:this.price,
 				count:this.count
 			}
-			this.$emit("edit-item",tempItem);
+			this.$store.dispatch("editItem",tempItem);
 			this.editId = -1;
 			this.type="";
 			this.price=0;
